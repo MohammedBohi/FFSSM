@@ -4,6 +4,7 @@
 package FFSSM;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Club {
@@ -14,6 +15,22 @@ public class Club {
     public String nom;
 
     public String adresse;
+
+
+    HashSet<Plongee> activites= new HashSet<Plongee> ();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Club club = (Club) o;
+        return Objects.equals(president, club.president) && Objects.equals(nom, club.nom) && Objects.equals(adresse, club.adresse) && Objects.equals(activites, club.activites) && Objects.equals(telephone, club.telephone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(president, nom, adresse, activites, telephone);
+    }
 
     public String telephone;
 
@@ -30,8 +47,14 @@ public class Club {
      * @return l'ensemble des plongées non conformes
      */
     public Set<Plongee> plongeesNonConformes() {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+       HashSet<Plongee> plongeeNonC= new HashSet<Plongee> ();
+       for (Plongee p: this.activites){
+           if(!p.estConforme()){
+               plongeeNonC.add(p);
+           }
+       }
+
+       return plongeeNonC;
     }
 
     /**
@@ -39,8 +62,7 @@ public class Club {
      * @param p la nouvelle plongée
      */
     public void organisePlongee(Plongee p) {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        this.activites.add(p);
     }
     
     
@@ -48,8 +70,8 @@ public class Club {
         return president;
     }
 
-    public void setPresident(Moniteur président) {
-        this.president = président;
+    public void setPresident(Moniteur president) {
+        this.president = president;
     }
 
     public String getNom() {

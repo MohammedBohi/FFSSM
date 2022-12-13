@@ -4,8 +4,9 @@
 package FFSSM;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class Licence {
+public class Licence implements Comparable<Licence>{
 
     public Personne possesseur;
 
@@ -14,6 +15,9 @@ public class Licence {
     public LocalDate delivrance;
 
     public Club club;
+    public Licence(){
+
+    }
 
     public Licence(Personne possesseur, String numero, LocalDate delivrance, Club club) {
         this.possesseur = possesseur;
@@ -45,8 +49,33 @@ public class Licence {
      * @return vrai si valide à la date d
      **/
     public boolean estValide(LocalDate d) {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+
+
+
+        return d.isAfter(delivrance) && d.isBefore(delivrance.plusYears(1)) || d.isEqual(delivrance);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Licence licence = (Licence) o;
+        return possesseur.equals(licence.possesseur) && numero.equals(licence.numero) && delivrance.equals(licence.delivrance) && club.equals(licence.club);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(possesseur, numero, delivrance, club);
+    }
+    @Override
+    public int compareTo(Licence autre) {
+        int comparaison = 0;
+        if(this.delivrance.isAfter(autre.getDelivrance())){
+            comparaison = 1;
+        }else{
+            comparaison = -1;
+        }
+        return comparaison;
     }
 
 }

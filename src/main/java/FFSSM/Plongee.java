@@ -1,13 +1,12 @@
-/**
- * @(#) Plongee.java
- */
 package FFSSM;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Plongee {
+	ArrayList<Licence> palanquee;
 
 	public Site lieu;
 
@@ -25,11 +24,13 @@ public class Plongee {
 		this.date = date;
 		this.profondeur = profondeur;
 		this.duree = duree;
+		palanquee= new ArrayList<Licence>();
 	}
-
+public Plongee(Moniteur chef){
+		this.chefDePalanquee=chef;
+}
 	public void ajouteParticipant(Plongeur participant) {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		palanquee.add(participant.derniereLicence());
 	}
 
 	public LocalDate getDate() {
@@ -43,8 +44,14 @@ public class Plongee {
 	 * @return vrai si la plongée est conforme
 	 */
 	public boolean estConforme() {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		boolean res= true;
+		LocalDate now= LocalDate.now();
+		for(Licence list: palanquee){
+			if(!list.estValide(now)){
+				res=false;
+				break;
+			}
+		}
+		return res;
 	}
-
 }
